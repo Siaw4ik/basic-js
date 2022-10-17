@@ -14,41 +14,41 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 function transform(arr) {
-  if(!Array.isArray(arr)){
+  if(Array.isArray(arr) === false){
     throw new Error(`'arr' parameter must be an instance of the Array!`)
-  } else if ( arr.length === 0){
+  }
+  else if(arr.length === 0){
     return []
   }
-
-  let newArray = [];
-
+  let newArray = []
   for(let i = 0; i < arr.length; i++){
-    if (arr[i] != '--discard-next' && arr[i] != '--discard-prev' && arr[i] != '--double-next' && arr[i] != '--double-prev') {
+    if(arr[i] != '--discard-next' && arr[i] != '--discard-prev' && arr[i] != '--double-next' && arr[i] != '--double-prev'){
       newArray.push(arr[i])
-    } else if (arr[i] === '--discard-next') {
-        if(i === arr.length - 1){
-          continue
-        }
-        i += 1
-    } else if (arr[i] === '--discard-prev') {
+    }
+    else if(arr[i] === '--discard-next'){
+      if(i === arr.length - 1){
+        continue
+      }
+      i += 1
+    }
+    else if(arr[i] === '--discard-prev'){
       if(i === 0 || arr[i - 2] === '--discard-next'){
         continue
       }
-      
-      newArray.pop()
-    } else if (arr[i] === '--double-next') {
-      if (i === arr.length - 1 || typeof(arr[i + 1]) === 'string'){
+      newArray = newArray.slice(0, -1)
+    }
+    else if(arr[i] === '--double-next'){
+      if(i === arr.length - 1 || typeof(arr[i + 1]) === 'string'){
         continue
       }
       newArray.push(arr[i + 1])
-    } else if(arr[i] === '--double-prev'){
+    }
+    else if(arr[i] === '--double-prev'){
       if(i === 0 || typeof(arr[i - 1]) === 'string' || arr[i - 2] === '--discard-next'){
         continue
       }
       newArray.push(arr[i - 1])
     }
-    
-    
   }
   return newArray
 }
